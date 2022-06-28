@@ -5,7 +5,7 @@ import "./Card.css";
 
 
 const UiCard = () => {
-    const [inputtext,setinputtext]=useState(String);
+    const [inputtext,setinputtext]=useState(Number);
     const [amount,setamount]=useState(Number);
     const [showcard,setshowcard]=useState(false);
 
@@ -15,33 +15,46 @@ const UiCard = () => {
             setshowcard(false)
         }
     }, [inputtext])
-    const calculateHandler=()=>{
-        let val=Number(inputtext);
-        if(val>=0 && val<=100)
+    const calculateHandler=()=>{   
+        if(inputtext<=100)
         {
-            setamount(Number(2.25*val))
+            let amt =inputtext*2.25;
+            setamount(amt)
+            setshowcard(true)
         }
-        else if(val>=100 && val<=149)
+        else if(inputtext<=150)
         {
-            setamount(Number(2.75*val))
+            let amt =(100*2.25)+(inputtext-100)*2.75
+            setamount(amt)
+            setshowcard(true)
         }
-        else if(val>=150 && val<=199)
+        else if(inputtext<=200)
         {
-            setamount(Number(3.61*val))
+            let amt= (100 *2.25) +
+               (50 * 2.75) +
+               (inputtext - 150) * 3.61;
+               setamount(amt)
+               setshowcard(true)
         }
-        else if(val>=200 && val<=499)
+        else if(inputtext<=500)
         {
-            setamount(Number(6.67*val))
+            let amt= (100 *2.25) +
+               (50 * 2.75) +
+               (50 *3.61) +(inputtext-200)*6.67;
+               setamount(amt)
+               setshowcard(true)
         }
         else
         {
-            setamount(Number(7.71*val))
+            let amt= (100 *2.25) +
+               (50 * 2.75) +
+               (50*3.61) * (300*6.67)+(inputtext-500)*7.71;
+               setamount(amt)
+               setshowcard(true)
         }
-        setshowcard(true);
-        
     }
-    console.log(inputtext);
-    
+    // console.log(amount);
+    // console.log(amount);
     return(
   <div>
     <div className="site-card-wrapper">
@@ -49,12 +62,12 @@ const UiCard = () => {
       <Col span={8}>
         <Card title="Enter the number of units consumed" bordered={false}>
           <Input.Group compact>
-            <Input onChange={(e)=>setinputtext(e.target.value)}
+            <Input onChange={(e)=>{setamount(0);setinputtext(0);setinputtext(Number(e.target.value))}}
               style={{
                 width: "calc(100% - 200px)",
               }}
             />
-            <Button onClick={calculateHandler} type="primary">Calculate</Button>
+            <Button onClick={()=>{setamount(0);calculateHandler()}} type="primary">Calculate</Button>
           </Input.Group>
         </Card>
       </Col>
